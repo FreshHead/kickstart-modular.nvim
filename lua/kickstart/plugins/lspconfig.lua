@@ -77,7 +77,7 @@ return {
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          -- map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace
           --  Similar to document symbols, except searches over your whole project.
@@ -89,7 +89,17 @@ return {
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          map('<leader>c', vim.lsp.buf.code_action, '[C]ode action')
+          map('<leader>d', function()
+            vim.lsp.buf.code_action {
+              context = {
+                only = {
+                  'source',
+                },
+                diagnostics = {},
+              },
+            }
+          end, 'Code [D]ocument action')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap
@@ -158,7 +168,8 @@ return {
             plugins = {
               {
                 name = '@vue/typescript-plugin',
-                location = '/home/u/.nvm/versions/node/v20.8.0/lib/node_modules/@vue/typescript-plugin',
+                -- location = '/home/u/.nvm/versions/node/v20.8.0/lib/node_modules/@vue/typescript-plugin',
+                location = require('custom.utils.getPath').get_npm_global_path() .. '/@vue/typescript-plugin',
                 languages = { 'javascript', 'typescript', 'vue' },
               },
             },
